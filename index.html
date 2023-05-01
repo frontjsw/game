@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>보드게임 계산기</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./normalize.css" />
+    <link rel="stylesheet" href="./reset.css" />
+  </head>
+  <body>
+    <div class="header">
+      <h1>점수 계산기</h1>
+    </div>
+    <div class="input-box">
+      <h2 class="tit">1Player</h2>
+      <div class="input">
+        <input type="text" id="player1-score" class="score-input" />
+        <button id="player1-add" class="add-btn">Add</button>
+      </div>
+    </div>
+    <div class="input-box">
+      <h2 class="tit">2Player</h2>
+      <div class="input">
+        <input type="text" id="player2-score" class="score-input" />
+        <button id="player2-add" class="add-btn">Add</button>
+      </div>
+    </div>
+
+    <div class="score-list-box">
+      <div class="tit">1Player Score</div>
+      <ul id="player1-score-list" class="score-list"></ul>
+      <p id="player1-result" class="result">0</p>
+    </div>
+    <div class="score-list-box">
+      <div class="tit">2Player Score</div>
+      <ul id="player2-score-list" class="score-list"></ul>
+      <p id="player2-result" class="result">0</p>
+    </div>
+
+    <div class="reset-box">
+      <button type="button" id="reset-btn" class="reset-btn">초기화</button>
+    </div>
+    <script>
+      const player1Scores = [];
+      const player2Scores = [];
+
+      function updateResult(playerScores, resultElement) {
+        const totalScore = playerScores.reduce((acc, cur) => acc + cur, 0);
+        resultElement.textContent = totalScore;
+      }
+
+      document.getElementById("player1-add").addEventListener("click", () => {
+        const inputEl = document.getElementById("player1-score");
+        const score = parseInt(inputEl.value);
+        if (!isNaN(score)) {
+          player1Scores.push(score);
+          const listEl = document.getElementById("player1-score-list");
+          const itemEl = document.createElement("li");
+          itemEl.textContent = score;
+          listEl.appendChild(itemEl);
+          updateResult(
+            player1Scores,
+            document.getElementById("player1-result")
+          );
+        }
+        inputEl.value = "";
+      });
+
+      document.getElementById("player2-add").addEventListener("click", () => {
+        const inputEl = document.getElementById("player2-score");
+        const score = parseInt(inputEl.value);
+        if (!isNaN(score)) {
+          player2Scores.push(score);
+          const listEl = document.getElementById("player2-score-list");
+          const itemEl = document.createElement("li");
+          itemEl.textContent = score;
+          listEl.appendChild(itemEl);
+          updateResult(
+            player2Scores,
+            document.getElementById("player2-result")
+          );
+        }
+        inputEl.value = "";
+      });
+
+      document.getElementById("reset-btn").addEventListener("click", () => {
+        player1Scores.length = 0;
+        player2Scores.length = 0;
+        const player1ListEl = document.getElementById("player1-score-list");
+        while (player1ListEl.firstChild) {
+          player1ListEl.removeChild(player1ListEl.firstChild);
+        }
+        const player2ListEl = document.getElementById("player2-score-list");
+        while (player2ListEl.firstChild) {
+          player2ListEl.removeChild(player2ListEl.firstChild);
+        }
+        document.getElementById("player1-result").textContent = "0";
+        document.getElementById("player2-result").textContent = "0";
+      });
+    </script>
+  </body>
+</html>
